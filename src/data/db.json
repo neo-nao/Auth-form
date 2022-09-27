@@ -1,26 +1,3 @@
 {
-  "accounts": [
-    {
-      "name": "stylish",
-      "lastName": "XD",
-      "selectedMethod": "number",
-      "email": "",
-      "number": "09378120803",
-      "password": "301674654stylish",
-      "passwordConfirmation": "301674654stylish",
-      "userToken": "VC2XYUFvrKKuM5q",
-      "id": 1
-    },
-    {
-      "name": "yuki",
-      "lastName": "ukyy",
-      "selectedMethod": "email",
-      "email": "yuki@gmail.com",
-      "number": "",
-      "password": "123123123",
-      "passwordConfirmation": "123123123",
-      "userToken": "9IwM4e8Pv92C4Ri",
-      "id": 2
-    }
-  ]
+  "accounts": []
 }
