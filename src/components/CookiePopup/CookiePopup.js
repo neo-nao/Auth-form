@@ -13,6 +13,7 @@ const CookiePopupContainer = styled.div`
     pointer-events:none;
     bottom:-100% !important;
 `}
+  will-change:position;
   width: clamp(17rem, 90%, 22.75rem);
   height: 4.25rem;
   position: fixed;
@@ -61,8 +62,7 @@ const CookiePopup = () => {
   };
 
   useEffect(() => {
-    if (!tokenCookie.isCookieEnabled)
-      setTimeout(() => setIsPopupShowing(true), 500);
+    if (!tokenCookie.isCookieEnabled) setIsPopupShowing(true);
   }, []);
 
   return (
