@@ -3,7 +3,7 @@ import GlobalStyles from "./styles/GlobalStyles/globalStyles.styled";
 import FormContainer from "./containers/FormContainer/FormContainer";
 import { flexbox } from "./styles/ExtendableStyles/ExtendableStyles";
 import { Toaster } from "react-hot-toast";
-import { tokenCookie } from "./services/cookieServices";
+import CookiePopup from "./components/CookiePopup/CookiePopup";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -19,21 +19,13 @@ const AppContainer = styled.div`
   }
 `;
 
-const cookieAsker = () => {
-  const confirmPopup = window.confirm("Accept cookies?");
-  if (confirmPopup) {
-    tokenCookie.cookieEnabled = true;
-  }
-};
-
-!tokenCookie.isCookieEnabled && cookieAsker()
-
 function App() {
   return (
     <>
       <GlobalStyles />
       <AppContainer>
         <FormContainer />
+        <CookiePopup />
         <Toaster />
       </AppContainer>
     </>
