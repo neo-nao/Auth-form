@@ -28,6 +28,7 @@ const initialValues = {
   lastName: "",
   selectedMethod: "email",
   email: "",
+  displyEmail: "",
   number: "",
   password: "",
   passwordConfirmation: "",
@@ -63,15 +64,18 @@ const validationSchema = (method) => {
 };
 
 const onSubmit = (values, pushMethod) => {
-  const createAccountPromise = createAccountRequest(values);
+  const editedValues = { ...values, email: values.email.toLocaleLowerCase() };
+  const createAccountPromise = createAccountRequest(editedValues);
   toast.promise(createAccountPromise, {
     loading: "Loading...",
-    success: "Account created",
-    error: "Failed to create account",
+    success: (msg) => msg || "Account created",
+    error: (err) => err || "Failed to create account!",
   });
   createAccountPromise.then(() => {
     tokenCookie.isCookieEnabled &&
-      tokenCookie.createTokenCookie({ cookiePassedValue: values.userToken });
+      tokenCookie.createTokenCookie({
+        cookiePassedValue: editedValues.userToken,
+      });
     pushMethod("/");
   });
 };
@@ -98,7 +102,7 @@ const Signup = (props) => {
 
     const putTokenPromise = formik.setValues({
       ...formikValues,
-      email: formikValues.email.toLocaleLowerCase(),
+      displyEmail: formik.values.email,
     });
 
     putTokenPromise

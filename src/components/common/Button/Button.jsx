@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { flexbox } from "../../../styles/ExtendableStyles/ExtendableStyles";
 
 const StyledButton = styled.button`
-  transition: box-shadow 0.15s ease, background 0.075s ease-out;
+  transition: box-shadow 0.15s ease, background 0.5s cubic-bezier(0, 1, 1, 0.99);
   width: ${(props) => props.width ?? "50px"};
   height: ${(props) => props.height ?? "50px"};
   ${flexbox()}

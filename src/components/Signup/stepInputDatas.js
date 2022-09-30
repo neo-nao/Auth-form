@@ -17,7 +17,11 @@ const stepInputDatas = [
     {
       id: 3,
       togglingInputs: [
-        { type: "email", placeholderText: "Email", name: "email" },
+        {
+          type: "email",
+          placeholderText: "Email",
+          name: "email",
+        },
         { type: "tel", placeholderText: "Number", name: "number" },
       ],
     },
