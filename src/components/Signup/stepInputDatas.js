@@ -16,6 +16,7 @@ const stepInputDatas = [
   [
     {
       id: 3,
+      checkExistence: true,
       togglingInputs: [
         {
           type: "email",
@@ -40,6 +41,7 @@ const stepInputDatas = [
       name: "passwordConfirmation",
     },
   ],
+  [{ id: 6 }],
 ];
 
 export default stepInputDatas;

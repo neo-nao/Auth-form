@@ -6,6 +6,15 @@ const AuthForm = styled.form`
   margin: 1.25rem 0;
 `;
 
+const InputWrapper = styled.div`
+  height: 100%;
+  position: relative;
+
+  > * {
+    width: 100%;
+  }
+`;
+
 const InputContainer = styled.div`
   height: var(--input-height);
   position: relative;
@@ -13,7 +22,7 @@ const InputContainer = styled.div`
 `;
 
 const Input = styled.input.attrs(({ type, ...rest }) => ({
-  type: type,
+  type,
   ...rest,
 }))`
   width: 100%;
@@ -83,7 +92,6 @@ const StyledButton = styled.button`
   letter-spacing: 0.5px;
   cursor: pointer;
   color: #fff;
-  opacity: 0.9;
 
   ${(props) =>
     !props.disabled &&
@@ -99,6 +107,7 @@ const StyledButton = styled.button`
 
 export {
   AuthForm,
+  InputWrapper,
   InputContainer,
   Input,
   InputLabel,

@@ -10,4 +10,16 @@ const createAccount = (accountObj) => {
   return http.post(accountsURL, accountObj);
 };
 
-export { getAccounts, createAccount };
+const checkDoesAccountExist = async (accountObjValues) => {
+  const queryString = `?${
+    accountObjValues.selectedMethod === "email" && accountObjValues.email !== ""
+      ? `email=${accountObjValues.email.toLowerCase()}`
+      : `number=${accountObjValues.number}`
+  }`;
+
+  const { data } = await getAccounts(queryString);
+
+  return data;
+};
+
+export { getAccounts, createAccount, checkDoesAccountExist };

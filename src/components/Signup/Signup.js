@@ -1,84 +1,24 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { createAccountRequest } from "../../services/accountRequestFuncs";
 import { createUserToken } from "../../services/userServices";
-import { tokenCookie } from "../../services/cookieServices";
+import { checkDoesAccountExist } from "../../services/accountServices";
+import {
+  initialValues,
+  validationSchema,
+  onSubmit,
+} from "./signupRequiredValues";
+import stepInputDatas from "./stepInputDatas";
+import toast from "react-hot-toast";
 import HeaderTitle from "../HeaderTitle/HeaderTitle";
-import { AuthForm } from "../../styles/StyledElements/StyledElements";
+import {
+  AuthForm,
+  InputWrapper,
+} from "../../styles/StyledElements/StyledElements";
 import MainInput from "../StyledInput/MainInput";
 import MethodSelection from "../../containers/MethodSelection/MethodSelection";
 import MainButton from "../StyledButton/MainButton";
 import AuthMethodSelection from "../AuthMethodSelection/AuthMethodSelection";
-import stepInputDatas from "./stepInputDatas";
-import toast from "react-hot-toast";
-
-const FlexWrapper = styled.div`
-  height: 100%;
-  position: relative;
-
-  > * {
-    width: 100%;
-  }
-`;
-
-const initialValues = {
-  name: "",
-  lastName: "",
-  selectedMethod: "email",
-  email: "",
-  displyEmail: "",
-  number: "",
-  password: "",
-  passwordConfirmation: "",
-};
-
-const initialErrorsSchema = {
-  name: yup.string().required("Name cannot be empty"),
-  lastName: yup.string().required("Last name cannot be empty"),
-  password: yup
-    .string()
-    .required("Password cannot be empty")
-    .min(8, "Password must contain at least 8 characters"),
-  passwordConfirmation: yup
-    .string()
-    .required("Password confirmation is empty")
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
-};
-
-const validationSchema = (method) => {
-  if (method === "email")
-    return yup.object({
-      ...initialErrorsSchema,
-      email: yup
-        .string()
-        .email("Email is not valid")
-        .required("Email is required"),
-    });
-
-  return yup.object({
-    ...initialErrorsSchema,
-    number: yup.number().required("Number is required"),
-  });
-};
-
-const onSubmit = (values, pushMethod) => {
-  const editedValues = { ...values, email: values.email.toLocaleLowerCase() };
-  const createAccountPromise = createAccountRequest(editedValues);
-  toast.promise(createAccountPromise, {
-    loading: "Loading...",
-    success: (msg) => msg || "Account created",
-    error: (err) => err || "Failed to create account!",
-  });
-  createAccountPromise.then(() => {
-    tokenCookie.isCookieEnabled &&
-      tokenCookie.createTokenCookie({
-        cookiePassedValue: editedValues.userToken,
-      });
-    pushMethod("/");
-  });
-};
+import ImageSelectInput from "../ImageSelectInput/ImageSelectInput";
 
 const Signup = (props) => {
   const [signupStepIndex, setSignupStepIndex] = useState(0);
@@ -106,7 +46,7 @@ const Signup = (props) => {
     });
 
     putTokenPromise
-      .then((res) => {
+      .then(() => {
         !formikValues.userToken &&
           formik.setValues({ ...formikValues, userToken: createUserToken() });
       })
@@ -123,9 +63,38 @@ const Signup = (props) => {
         : errorKeys.includes(inpData.togglingInputs[1].name);
     });
 
+    let shouldStopOnStep = false;
+
+    const errorText = `${formikSelectedMethod.replace(
+      formikSelectedMethod.charAt(0),
+      formikSelectedMethod.charAt(0).toUpperCase()
+    )} already exists!`;
+
     if (inpErrors.length === 0) {
+      if (
+        stepInputDatas[signupStepIndex].some((inputData) => {
+          return inputData.checkExistence;
+        })
+      ) {
+        shouldStopOnStep = true;
+        checkDoesAccountExist(formikValues)
+          .then((res) => {
+            if (res.length > 0) {
+              formik.setErrors({
+                ...formik.errors,
+                [formikSelectedMethod]: errorText,
+              });
+
+              toast.error(errorText);
+            } else {
+              shouldStopOnStep = false;
+              !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
       if (!isOnSubmit) {
-        setSignupStepIndex(signupStepIndex + 1);
+        !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
       } else {
         formik.submitForm();
       }
@@ -136,14 +105,18 @@ const Signup = (props) => {
             toast.error(formik.errors[inpError.name]);
           else toast.error(`${inpError.placeholderText} can't be empty`);
         } else {
-          if (formik.values.selectedMethod === "email") {
-            if (formik.errors[inpError.togglingInputs[0].name] !== "")
-              toast.error(formik.errors[inpError.togglingInputs[0].name]);
-            else toast.error(`${inpError.togglingInputs[0].placeholderText}`);
+          if (formikSelectedMethod === "email") {
+            formik.errors[inpError.togglingInputs[0].name] !== ""
+              ? toast.error(formik.errors[inpError.togglingInputs[0].name])
+              : toast.error(
+                  `${inpError.togglingInputs[0].placeholderText} can't be empty`
+                );
           } else {
-            if (formik.errors[inpError.togglingInputs[1].name] !== "")
-              toast.error(formik.errors[inpError.togglingInputs[1].name]);
-            else toast.error(`${inpError.togglingInputs[1].placeholderText}`);
+            formik.errors[inpError.togglingInputs[1].name] !== ""
+              ? toast.error(formik.errors[inpError.togglingInputs[1].name])
+              : toast.error(
+                  `${inpError.togglingInputs[1].placeholderText} can't be empty`
+                );
           }
         }
       });
@@ -152,10 +125,6 @@ const Signup = (props) => {
 
   const handleMethod = (methodType) =>
     formik.setValues({ ...formikValues, selectedMethod: methodType });
-
-  // const handleInpError = (name) => {
-  //   return ;
-  // };
 
   const handleInputProps = (name, togglingInputs, restInpDatas) => {
     if (togglingInputs) {
@@ -197,8 +166,15 @@ const Signup = (props) => {
         mainTitle="create new account &#128293;"
         headerParagraph="please fill in the forms to continue"
       />
-      <AuthForm style={{ margin: "2rem 0" }}>
-        <FlexWrapper>
+      <AuthForm
+        style={{
+          margin: "2rem 0",
+          height:
+            stepInputDatas[signupStepIndex].some((sid) => sid.id === 6) &&
+            "26.5rem",
+        }}
+      >
+        <InputWrapper>
           {signupStepIndex === 1 && (
             <MethodSelection
               method={formikSelectedMethod}
@@ -207,19 +183,28 @@ const Signup = (props) => {
           )}
           <fieldset id="main-signup-inputs">
             {stepInputDatas[signupStepIndex].map(
-              ({ id, name, togglingInputs, ...restInputData }) => {
+              ({ id, type, name, togglingInputs, ...restInputData }) => {
                 const inpTogglingName = togglingInputs
                   ? formikSelectedMethod === "email"
                     ? togglingInputs[0].name
                     : togglingInputs[1].name
                   : name;
 
-                return (
+                return ["text", "email", "password", "tel"].includes(
+                  togglingInputs
+                    ? formikSelectedMethod === "email"
+                      ? togglingInputs[0].type
+                      : togglingInputs[1].type
+                    : type
+                ) ? (
                   <MainInput
                     key={id}
+                    type={type}
                     {...handleInputProps(name, togglingInputs, restInputData)}
                     isError={handleInputError(inpTogglingName)}
                   />
+                ) : (
+                  <ImageSelectInput key={id} />
                 );
               }
             )}
@@ -233,7 +218,7 @@ const Signup = (props) => {
               authRedirect={{ redirectLink: "/login", redirectText: "Login" }}
             />
           </section>
-        </FlexWrapper>
+        </InputWrapper>
       </AuthForm>
     </>
   );
