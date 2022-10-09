@@ -27,7 +27,8 @@ const LargeImageContainer = styled.div`
   z-index: 50;
 
   > .image-shown {
-    transition: all 0.4s ease;
+    transition: border-radius 0.4s ease, transform 0.4s ease, top 0.4s ease,
+      left 0.4s ease;
     background-color: rgba(0, 0, 0, 0);
     overflow: visible;
     border-radius: 0;
@@ -51,7 +52,6 @@ const LargeImage = styled.div`
 
   > img {
     transition: opacity 0.3s ease;
-    width: 25vw;
     height: 100%;
     object-fit: cover;
     opacity: 0;

@@ -50,7 +50,7 @@ const Profile = ({ location }) => {
   useEffect(() => {
     token && getUserAccount(token);
 
-    tokenCookie.isCookieEnabled &&
+    tokenCookie.cookieEnabled &&
       !checkUserCookie().doesTokenExist &&
       token &&
       tokenCookie.createTokenCookie({ cookiePassedValue: token });

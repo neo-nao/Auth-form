@@ -53,7 +53,7 @@ const onSubmit = (values, pushMethod) => {
     error: (err) => err || "Failed to create account!",
   });
   createAccountPromise.then(() => {
-    tokenCookie.isCookieEnabled &&
+    tokenCookie.cookieEnabled &&
       tokenCookie.createTokenCookie({
         cookiePassedValue: editedValues.userToken,
       });

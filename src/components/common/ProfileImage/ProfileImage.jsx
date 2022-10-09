@@ -45,7 +45,6 @@ const RemoveImageButton = styled.div`
 
 const ProfileImage = ({ src, editMode, size, openable }) => {
   const handleImageOpen = ({ target }) => {
-    console.dir(target);
     const { top, left } = target.getBoundingClientRect();
 
     showLargeImage({
