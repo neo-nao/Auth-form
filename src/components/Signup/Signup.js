@@ -18,7 +18,8 @@ import MainInput from "../StyledInput/MainInput";
 import MethodSelection from "../../containers/MethodSelection/MethodSelection";
 import MainButton from "../StyledButton/MainButton";
 import AuthMethodSelection from "../AuthMethodSelection/AuthMethodSelection";
-import ImageSelectInput from "../ImageSelectInput/ImageSelectInput";
+import ImageSelectSection from "../ImageSelectInput/ImageSelectSection";
+import { convertToBase64 } from "../../utils/imageUtils";
 
 const Signup = (props) => {
   const [signupStepIndex, setSignupStepIndex] = useState(0);
@@ -123,6 +124,16 @@ const Signup = (props) => {
     }
   };
 
+  const handleRemoveImage = () => {
+    formik.setValues({ ...formikValues, profileImage: "" });
+  };
+
+  const handleAddImage = async (e) => {
+    const [file] = e.target.files;
+    const imageURL = await convertToBase64(file);
+    await formik.setValues({ ...formikValues, profileImage: imageURL });
+  };
+
   const handleMethod = (methodType) =>
     formik.setValues({ ...formikValues, selectedMethod: methodType });
 
@@ -171,7 +182,7 @@ const Signup = (props) => {
           margin: "2rem 0",
           height:
             stepInputDatas[signupStepIndex].some((sid) => sid.id === 6) &&
-            "26.5rem",
+            "27.5rem",
         }}
       >
         <InputWrapper>
@@ -204,7 +215,12 @@ const Signup = (props) => {
                     isError={handleInputError(inpTogglingName)}
                   />
                 ) : (
-                  <ImageSelectInput key={id} />
+                  <ImageSelectSection
+                    key={id}
+                    imageSrc={formikValues.profileImage}
+                    handleAddImage={handleAddImage}
+                    handleRemoveImage={handleRemoveImage}
+                  />
                 );
               }
             )}

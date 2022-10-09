@@ -13,7 +13,7 @@ const CookiePopupContainer = styled.div`
     pointer-events:none;
     bottom:-100% !important;
 `}
-  will-change:position;
+  will-change:bottom;
   width: clamp(17rem, 90%, 22.75rem);
   height: 4.25rem;
   position: fixed;

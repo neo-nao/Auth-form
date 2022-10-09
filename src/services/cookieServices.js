@@ -14,16 +14,16 @@ const checkUserCookie = () => {
 
 class Cookie {
   constructor(cookieObj = { cookieName: "", expire: 1, cookieValue: "" }) {
-    this.isCookieEnabled = checkUserCookie().doesTokenExist;
+    this._isCookieEnabled = checkUserCookie().doesTokenExist;
     this.cookieObj = cookieObj;
   }
 
   get cookieEnabled() {
-    return this.isCookieEnabled;
+    return this._isCookieEnabled;
   }
 
   set cookieEnabled(val) {
-    this.isCookieEnabled = val;
+    this._isCookieEnabled = val;
   }
 
   createTokenCookie = ({
