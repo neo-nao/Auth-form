@@ -62,7 +62,7 @@ const CookiePopup = () => {
   };
 
   useEffect(() => {
-    if (!tokenCookie.isCookieEnabled) setIsPopupShowing(true);
+    if (!tokenCookie.cookieEnabled) setIsPopupShowing(true);
   }, []);
 
   return (

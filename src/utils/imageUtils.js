@@ -33,10 +33,8 @@ const showLargeImage = ({ x, y, src }) => {
   largeImage.appendChild(image);
 
   setTimeout(() => {
-    liStyle.transition = "";
     liStyle.width = image.clientWidth + "px";
     liStyle.height = image.clientHeight + "px";
-    liStyle.transition = "";
 
     image.style.cssText = "opacity: 1";
     largeImage.classList.add("image-shown");

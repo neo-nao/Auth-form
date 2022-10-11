@@ -8,7 +8,7 @@ const initialValues = {
   lastName: "",
   selectedMethod: "email",
   email: "",
-  displyEmail: "",
+  displayEmail: "",
   number: "",
   profileImage: "",
   password: "",

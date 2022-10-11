@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 data/
-src/services/httpServices.js
+services/httpServices.js
 
 # testing
 /coverage

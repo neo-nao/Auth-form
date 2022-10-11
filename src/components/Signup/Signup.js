@@ -43,7 +43,7 @@ const Signup = (props) => {
 
     const putTokenPromise = formik.setValues({
       ...formikValues,
-      displyEmail: formik.values.email,
+      displayEmail: formik.values.email,
     });
 
     putTokenPromise
