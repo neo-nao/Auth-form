@@ -15,7 +15,6 @@ const FileSelectContainer = styled.div`
   height: 70px;
   position: relative;
   overflow: hidden;
-  // background-color: red;
 
   :hover svg {
     color: var(--main-blue-dark) !important;

@@ -28,17 +28,34 @@ const LargeImageContainer = styled.div`
 
   > .image-shown {
     transition: border-radius 0.4s ease, transform 0.4s ease, top 0.4s ease,
-      left 0.4s ease;
-    background-color: rgba(0, 0, 0, 0);
-    overflow: visible;
-    border-radius: 0;
-    inset: 50%;
-    transform: translate(-50%, -50%) scale(3) !important;
+      left 0.4s ease, all 0.4s ease;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    top: 50% !important;
+
+    transform: translateY(-50%) scale(5);
+
+    > img {
+      opacity: 1;
+    }
+
+    @media (max-width: 680px) {
+      transform: translateY(-50%) scale(4) !important;
+    }
+    @media (max-width: 534px) {
+      transform: translateY(-50%) scale(3) !important;
+    }
+    @media (max-width: 405px) {
+      transform: translateY(-50%) scale(2.5) !important;
+    }
+    @media (max-width: 350px) {
+      transform: translateY(-50%) scale(2) !important;
+    }
   }
 `;
 
 const LargeImage = styled.div`
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
   width: 125px;
   height: 125px;
   border-radius: 50%;
@@ -46,19 +63,16 @@ const LargeImage = styled.div`
   position: absolute;
   overflow: hidden;
   opacity: 0;
-  inset: 0;
   pointer-events: none;
   z-index: 10;
 
   > img {
     transition: opacity 0.3s ease;
+    width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     opacity: 0;
-
-    @media (max-width: 450px) {
-      width: 31.5vw;
-    }
   }
 `;
 

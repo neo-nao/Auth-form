@@ -16,12 +16,11 @@ const showLargeImage = ({ x, y, src }) => {
   image.src = src;
   image.alt = "Large image";
 
-  const imagePosTranform = `calc(${x}px - 5.25%) , calc(${y}px - 5.25%)`;
-
   const { style: liStyle } = largeImage;
 
   liStyle.cssText = `
-  transform:translate(${imagePosTranform});
+  top: calc(${y}px - 6.5px);
+  left: calc(${x}px - 6.5px);
   opacity:1;
   `;
 
@@ -33,10 +32,6 @@ const showLargeImage = ({ x, y, src }) => {
   largeImage.appendChild(image);
 
   setTimeout(() => {
-    liStyle.width = image.clientWidth + "px";
-    liStyle.height = image.clientHeight + "px";
-
-    image.style.cssText = "opacity: 1";
     largeImage.classList.add("image-shown");
   }, 200);
 };

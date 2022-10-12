@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { tokenCookie, checkUserCookie } from "../../services/cookieServices";
 import { getAccounts } from "../../services/accountServices";
+import MainButton from "../../components/StyledButton/MainButton";
 import { ProfileSection, ImageContainer } from "./ProfileStyles.styled";
 import ProfileImage from "../../components/common/ProfileImage/ProfileImage";
 import ProfileDetail from "./ProfileDetail";
@@ -40,6 +41,11 @@ const Profile = ({ location }) => {
         </ImageContainer>
       </ProfileSection>
       <ProfileDetail userAccount={userAccount} />
+      <Link to="/">
+        <MainButton style={{ marginTop: "3rem" }} onClick={handleLogout}>
+          Log out
+        </MainButton>
+      </Link>
     </>
   ) : (
     <NotFound />
