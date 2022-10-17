@@ -19,7 +19,7 @@ import MethodSelection from "../../containers/MethodSelection/MethodSelection";
 import MainButton from "../StyledButton/MainButton";
 import AuthMethodSelection from "../AuthMethodSelection/AuthMethodSelection";
 import ImageSelectSection from "../ImageSelectInput/ImageSelectSection";
-import { convertToBase64 } from "../../utils/imageUtils";
+import { convertToBase64, resizeBase64Img } from "../../utils/imageUtils";
 
 const Signup = (props) => {
   const [signupStepIndex, setSignupStepIndex] = useState(0);
@@ -131,6 +131,7 @@ const Signup = (props) => {
   const handleAddImage = async (e) => {
     const [file] = e.target.files;
     const imageURL = await convertToBase64(file);
+    // const resizedImage = await resizeBase64Img(imageURL, 190, 190);
     await formik.setValues({ ...formikValues, profileImage: imageURL });
   };
 

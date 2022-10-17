@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ProfileImage from "../common/ProfileImage/ProfileImage";
-import { BiImageAdd } from "react-icons/bi";
+import { IoImageOutline } from "react-icons/io5";
 
 const ProfileSelectContainer = styled.section`
   height: 19rem;
@@ -15,6 +15,7 @@ const FileSelectContainer = styled.div`
   height: 70px;
   position: relative;
   overflow: hidden;
+  // background-color: red;
 
   :hover svg {
     color: var(--main-blue-dark) !important;
@@ -25,7 +26,6 @@ const FileSelectContainer = styled.div`
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 2.5px;
     top: -15px;
     pointer-events: none;
     z-index: 2;
@@ -64,7 +64,7 @@ const ImageSelectSection = ({
     <ProfileSelectContainer>
       <ProfileImage src={imageSrc} editMode={{ handleRemoveImage }} />
       <FileSelectContainer>
-        <BiImageAdd className="add-image-icon" />
+        <IoImageOutline className="add-image-icon" />
         <FileSelectButton onChange={handleAddImage} title="" />
         <span className="file-button-text">Gallery</span>
       </FileSelectContainer>

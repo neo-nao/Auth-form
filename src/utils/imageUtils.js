@@ -36,4 +36,32 @@ const showLargeImage = ({ x, y, src }) => {
   }, 200);
 };
 
-export { convertToBase64, showLargeImage };
+const resizeBase64Img = (base64, width, height) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+
+  const processPromise = new Promise((resolve, reject) => {
+    const loadImage = async () => {
+      const img = document.createElement("img");
+      img.src = `data:image/gif;base64,${base64.slice(22)}`;
+
+      return img;
+    };
+
+    loadImage()
+      .then((res) => {
+        context.scale(width / res.width, height / res.height);
+        context.drawImage(res, 0, 0);
+        resolve(canvas.toDataURL());
+      })
+      .catch((err) => {
+        reject(err);
+        console.error(err);
+      });
+  });
+  return processPromise;
+};
+
+export { convertToBase64, showLargeImage, resizeBase64Img };
