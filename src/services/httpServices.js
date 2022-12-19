@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://login-signup-form-yuki.herokuapp.com";
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 const http = {
   get: axios.get,
