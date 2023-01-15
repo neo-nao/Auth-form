@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-data/
+data
 
 # testing
 /coverage
@@ -18,6 +18,7 @@ data/
 .env.development.local
 .env.test.local
 .env.production.local
+.env
 
 npm-debug.log*
 yarn-debug.log*

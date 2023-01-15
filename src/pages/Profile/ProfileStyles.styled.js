@@ -30,7 +30,7 @@ const ImageContainer = styled.div`
 const ProfileDetailSection = styled.section`
   height: 50%;
   ${flexbox({ direction: "column", justify: "flex-start" })}
-  margin-top: 5rem;
+  margin-top: 12.5rem;
 
   > table {
     width: 100%;

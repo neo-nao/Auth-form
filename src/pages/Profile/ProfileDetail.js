@@ -48,6 +48,7 @@ const ProfileDetail = ({ userAccount }) => {
       <table>
         <tbody>{renderTableDatas()}</tbody>
       </table>
+      <SkeletonElement />
     </ProfileDetailSection>
   );
 };
