@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import HeaderTitle from "../HeaderTitle/HeaderTitle";
+import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import MainForm from "../../containers/MainForm/MainForm";
 import { checkUserCookie } from "../../services/cookieServices";
 
