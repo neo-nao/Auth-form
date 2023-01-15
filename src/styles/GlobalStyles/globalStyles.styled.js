@@ -13,9 +13,9 @@ const GlobalStyles = createGlobalStyle`
 }
 
 :root{
+  --main-blue: #3561fe;
   --dark-blue: #222831;
   --light-dark-blue: #393E46;
-  --main-blue: #3561fe;
   --main-blue-dark: #163abf;
   --secondary-blue: #00ADB5;
   --third-blue: #d4dbee;

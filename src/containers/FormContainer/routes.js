@@ -1,8 +1,8 @@
-import Login from "../../components/Login/Login";
-import Signup from "../../components/Signup/Signup";
+import Login from "../../pages/Login/Login";
+import Signup from "../../pages/Signup/Signup";
 import Profile from "../../pages/Profile/Profile";
-import ForgotPassword from "../../components/ForgotPassword/ForgotPassword";
-import NotFound from "../../components/NotFound/NotFound";
+import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
+import NotFound from "../../pages/NotFound/NotFound";
 
 const routes = [
   {

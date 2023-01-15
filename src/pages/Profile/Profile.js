@@ -6,7 +6,7 @@ import MainButton from "../../components/StyledButton/MainButton";
 import { ProfileSection, ImageContainer } from "./ProfileStyles.styled";
 import ProfileImage from "../../components/common/ProfileImage/ProfileImage";
 import ProfileDetail from "./ProfileDetail";
-import NotFound from "../../components/NotFound/NotFound";
+import NotFound from "../NotFound/NotFound";
 
 const Profile = ({ location }) => {
   const [userAccount, setUserAccount] = useState({});

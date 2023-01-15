@@ -9,17 +9,18 @@ import {
 } from "./signupRequiredValues";
 import stepInputDatas from "./stepInputDatas";
 import toast from "react-hot-toast";
-import HeaderTitle from "../HeaderTitle/HeaderTitle";
+import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import {
   AuthForm,
   InputWrapper,
 } from "../../styles/StyledElements/StyledElements";
-import MainInput from "../StyledInput/MainInput";
+import MainInput from "../../components/StyledInput/MainInput";
 import MethodSelection from "../../containers/MethodSelection/MethodSelection";
-import MainButton from "../StyledButton/MainButton";
-import AuthMethodSelection from "../AuthMethodSelection/AuthMethodSelection";
-import ImageSelectSection from "../ImageSelectInput/ImageSelectSection";
-import { convertToBase64, resizeBase64Img } from "../../utils/imageUtils";
+import MainButton from "../../components/StyledButton/MainButton";
+import AuthMethodSelection from "../../components/AuthMethodSelection/AuthMethodSelection";
+import ImageSelectSection from "../../components/ImageSelectInput/ImageSelectSection";
+import { convertToBase64 } from "../../utils/imageUtils";
+import { useMemo } from "react";
 
 const Signup = (props) => {
   const [signupStepIndex, setSignupStepIndex] = useState(0);
@@ -31,9 +32,18 @@ const Signup = (props) => {
     onSubmit: (values) => onSubmit(values, props.history.push),
   });
 
-  const formikValues = formik.values;
-
   const formikSelectedMethod = formik.values.selectedMethod;
+
+  useEffect(() => {
+    formik.setValues({ ...formikValues, email: "", number: "" });
+    formik.setTouched({ ...formik.touched, email: false, number: false });
+
+    document
+      .querySelectorAll("#main-signup-inputs input")
+      .forEach((inp) => (inp.value = ""));
+  }, [formikSelectedMethod]);
+
+  const formikValues = formik.values;
 
   const isOnSubmit =
     signupStepIndex === stepInputDatas.length - 1 ? true : false;
@@ -157,20 +167,21 @@ const Signup = (props) => {
     }
   };
 
-  useEffect(() => {
-    formik.setValues({ ...formikValues, email: "", number: "" });
-    formik.setTouched({ ...formik.touched, email: false, number: false });
-
-    document
-      .querySelectorAll("#main-signup-inputs input")
-      .forEach((inp) => (inp.value = ""));
-  }, [formikSelectedMethod]);
-
   const handleInputError = (inpTogglingName) => {
     return (
       formik.errors[inpTogglingName] && formik.touched[inpTogglingName] && true
     );
   };
+
+  const methodSelector = useMemo(
+    () => (
+      <MethodSelection
+        method={formikValues.selectedMethod}
+        methodHandler={handleMethod}
+      />
+    ),
+    [formikSelectedMethod]
+  );
 
   return (
     <>
@@ -187,12 +198,7 @@ const Signup = (props) => {
         }}
       >
         <InputWrapper>
-          {signupStepIndex === 1 && (
-            <MethodSelection
-              method={formikSelectedMethod}
-              methodHandler={handleMethod}
-            />
-          )}
+          {signupStepIndex === 1 && methodSelector}
           <fieldset id="main-signup-inputs">
             {stepInputDatas[signupStepIndex].map(
               ({ id, type, name, togglingInputs, ...restInputData }) => {
