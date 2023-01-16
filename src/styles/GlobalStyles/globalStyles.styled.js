@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
 }
 
 :root{
+  --primary-font:'Montserrat',system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --main-blue: #3561fe;
   --dark-blue: #222831;
   --light-dark-blue: #393E46;
@@ -34,7 +35,7 @@ a{
 }
 
 body,button,input{
-    font-family: 'Montserrat',system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--primary-font);
     font-weight:500;
 }
 

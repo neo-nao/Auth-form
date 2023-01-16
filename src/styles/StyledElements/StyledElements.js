@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { flexbox } from "../ExtendableStyles/ExtendableStyles";
 
 const AuthForm = styled.form`
-  height: 18.5rem;
+  // height: 18.5rem;
   margin: 1.25rem 0;
 `;
 

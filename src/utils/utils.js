@@ -64,4 +64,40 @@ const resizeBase64Img = (base64, width, height) => {
   return processPromise;
 };
 
-export { convertToBase64, showLargeImage, resizeBase64Img };
+const random = (max, min) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+class authCodeGenerator {
+  constructor() {
+    this.currentCode = { code: null, timeout: null };
+  }
+  getCode() {
+    return this.currentCode.code;
+  }
+  generateCode() {
+    const isRetrievable = this.currentCode.code
+      ? this.currentCode.timeout - new Date().getTime() <= 0
+      : false;
+
+    if (!this.currentCode.code || isRetrievable) {
+      const randomCode = random(9999, 1000);
+
+      const oneMin = new Date();
+      oneMin.setMinutes(oneMin.getMinutes() + 1);
+
+      this.currentCode = { code: randomCode, timeout: oneMin.getTime() };
+    }
+  }
+  clearCode() {
+    this.currentCode = { code: null, timeout: null };
+  }
+}
+
+export {
+  convertToBase64,
+  showLargeImage,
+  resizeBase64Img,
+  random,
+  authCodeGenerator,
+};

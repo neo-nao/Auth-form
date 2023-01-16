@@ -1,4 +1,3 @@
-import { memo } from "react";
 import {
   MethodSlider,
   MethodButton,
@@ -6,7 +5,6 @@ import {
 } from "../../styles/StyledElements/MethodSelection.styled";
 
 const MethodSelection = ({ method, methodHandler }) => {
-  console.log("render method select");
   return (
     <section style={{ height: "var(--button-height)" }}>
       <MethodSlider>

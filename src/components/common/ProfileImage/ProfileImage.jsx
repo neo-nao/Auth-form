@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { BiTrash } from "react-icons/bi";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { flexbox } from "../../../styles/ExtendableStyles/ExtendableStyles";
-import { showLargeImage } from "../../../utils/imageUtils";
+import { showLargeImage } from "../../../utils/utils";
 
 const ProfileImageStyled = styled.div`
   --main-border-radius: 50%;

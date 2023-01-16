@@ -1,3 +1,4 @@
+import AuthCodeProvider from "./providers/AuthCodeProvider";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles/globalStyles.styled";
 import FormContainer from "./containers/FormContainer/FormContainer";
@@ -90,7 +91,7 @@ const closeImage = (e) => {
 
 function App() {
   return (
-    <>
+    <AuthCodeProvider>
       <GlobalStyles />
       <AppContainer>
         <FormContainer />
@@ -100,7 +101,7 @@ function App() {
       <LargeImageContainer id="large-image-container" onClick={closeImage}>
         <LargeImage id="large-image"></LargeImage>
       </LargeImageContainer>
-    </>
+    </AuthCodeProvider>
   );
 }
 
