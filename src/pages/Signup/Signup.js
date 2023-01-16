@@ -19,7 +19,7 @@ import MethodSelection from "../../containers/MethodSelection/MethodSelection";
 import MainButton from "../../components/StyledButton/MainButton";
 import AuthMethodSelection from "../../components/AuthMethodSelection/AuthMethodSelection";
 import ImageSelectSection from "../../components/ImageSelectInput/ImageSelectSection";
-import { convertToBase64 } from "../../utils/imageUtils";
+import { convertToBase64 } from "../../utils/utils";
 import { useMemo } from "react";
 
 const Signup = (props) => {
@@ -232,7 +232,7 @@ const Signup = (props) => {
               }
             )}
           </fieldset>
-          <section style={{ position: "absolute", bottom: 0 }}>
+          <section style={{ marginTop: "20px" }}>
             <MainButton onClick={handleSignupStep}>
               {isOnSubmit ? "Create account" : "Next"}
             </MainButton>
