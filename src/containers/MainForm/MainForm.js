@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 import MethodSelection from "../MethodSelection/MethodSelection";
 import LoginForm from "../LoginForm/LoginForm";
 import AuthMethodSelection from "../../components/AuthMethodSelection/AuthMethodSelection";

@@ -141,7 +141,6 @@ const Signup = (props) => {
   const handleAddImage = async (e) => {
     const [file] = e.target.files;
     const imageURL = await convertToBase64(file);
-    // const resizedImage = await resizeBase64Img(imageURL, 190, 190);
     await formik.setValues({ ...formikValues, profileImage: imageURL });
   };
 

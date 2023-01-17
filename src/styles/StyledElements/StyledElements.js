@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { flexbox } from "../ExtendableStyles/ExtendableStyles";
 
 const AuthForm = styled.form`
-  // height: 18.5rem;
   margin: 1.25rem 0;
 `;
 
@@ -19,21 +18,33 @@ const InputContainer = styled.div`
   height: var(--input-height);
   position: relative;
   margin: 1rem 0;
+  background-color: ${({ isError }) =>
+    isError ? "rgba(255, 0, 0, 0.1)" : "var(--light-blue)"};
+  border-radius: var(--main-border-radius);
+  transition: all 0.3s ease;
+
+  ${(props) =>
+    props.isPassword &&
+    props.isOnFocus &&
+    `
+  box-shadow:  0 0 0 1.5px
+  ${props.isError ? "rgba(255, 0, 0, 0.75)" : "var(--main-blue)"};
+  `}
 `;
 
 const Input = styled.input.attrs(({ type, ...rest }) => ({
   type,
   ...rest,
 }))`
-  width: 100%;
+  transition: box-shadow 0.3s ease;
+  width: ${(props) => (props.isPassword ? "85%" : "100%")};
   height: 100%;
   padding: 10px 20px;
-  border-radius: var(--main-border-radius);
   font-size: 14px;
   font-weight: 600;
-  background-color: ${({ isError }) =>
-    isError ? "rgba(255, 0, 0, 0.1)" : "var(--light-blue)"};
-  transition: all 0.3s ease;
+  background: none;
+  border-radius: var(--main-border-radius);
+
   ${({ type }) =>
     type === "password" &&
     `font-weight: 900;
@@ -41,9 +52,11 @@ const Input = styled.input.attrs(({ type, ...rest }) => ({
   `}
 
   :focus {
-    box-shadow: 0 0 0 1.5px
-      ${({ isError }) =>
-        isError ? "rgba(255, 0, 0, 0.75)" : "var(--main-blue)"};
+    box-shadow: ${(props) =>
+      !props.isPassword
+        ? `0 0 0 1.5px
+   ${props.isError ? "rgba(255, 0, 0, 0.75)" : "var(--main-blue)"}`
+        : "unset"};
   }
 
   :focus + label {
@@ -69,6 +82,20 @@ const InputLabel = styled.label`
 const InputPlaceholderText = styled.span`
   font-size: 13px;
   margin-left: 12.5px;
+`;
+
+const EyeButton = styled.button`
+  width: 35px;
+  height: 35px;
+  font-size: 25px;
+  ${flexbox()}
+  background: none;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: rgb(30, 130, 200);
+  cursor: pointer;
 `;
 
 const ForgotPassLink = styled.span`
@@ -112,6 +139,7 @@ export {
   Input,
   InputLabel,
   InputPlaceholderText,
+  EyeButton,
   ForgotPassLink,
   StyledButton,
   StyledButtonContainer,

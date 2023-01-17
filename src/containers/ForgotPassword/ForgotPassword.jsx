@@ -1,9 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useFormik } from "formik";
 import MethodSelection from "../MethodSelection/MethodSelection";
-import { toast } from "react-hot-toast";
 import * as yup from "yup";
-import { getAccounts } from "../../services/accountServices";
 import MainButton from "../../components/StyledButton/MainButton";
 import { AuthForm } from "../../styles/StyledElements/StyledElements";
 import MainInput from "../../components/StyledInput/MainInput";
@@ -25,57 +23,17 @@ const validationSchema = (method) =>
         number: yup.number().required("number is required"),
       });
 
-const checkResponse = (account) => {
-  if (account) {
-    return (
-      <>
-        Your code : <h4 style={{ marginLeft: ".5ch" }}>{2}</h4>
-      </>
-    );
-  } else {
-    return "Account not found";
-  }
+const onSubmit = (values, method, checkAccount) => {
+  checkAccount(method, values);
 };
 
-const onSubmit = (values, method, handleIsOnAuthCode, authCode) => {
-  const checkAccount = async () => {
-    const promiseToast = toast.loading("Loading...");
-    const response = await (method === "email"
-      ? getAccounts("?email=" + values.email)
-      : getAccounts("?number=" + values.number));
-
-    const {
-      data: [account],
-    } = response;
-
-    toast.dismiss(promiseToast);
-
-    if (account) {
-      handleIsOnAuthCode(true);
-      authCode.generateCode();
-      toast(
-        <>
-          Your code :{" "}
-          <h4 style={{ marginLeft: ".5ch" }}>{authCode.getCode()}</h4>
-        </>,
-        { icon: "📧", duration: 1000 * 60 }
-      );
-    } else {
-      toast.error("Account is not found!");
-    }
-  };
-
-  checkAccount();
-};
-
-const ResetPasswordForm = ({ handleIsOnAuthCode, authCode }) => {
+const ForgotPassword = ({ checkAccount }) => {
   const formik = useFormik({
     initialValues,
     initialTouched: initialValues,
     initialErrors: initialValues,
     validationSchema: () => validationSchema(method),
-    onSubmit: (values) =>
-      onSubmit(values, method, handleIsOnAuthCode, authCode),
+    onSubmit: (values) => onSubmit(values, method, checkAccount),
   });
   const [method, setMethod] = useState("email");
 
@@ -123,4 +81,4 @@ const ResetPasswordForm = ({ handleIsOnAuthCode, authCode }) => {
   );
 };
 
-export default ResetPasswordForm;
+export default ForgotPassword;
