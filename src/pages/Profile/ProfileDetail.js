@@ -18,7 +18,10 @@ const ProfileDetail = ({ userAccount }) => {
     let cellTags = [];
     for (let i = 0; i < tableDatas.length; i++) {
       const cellTag = (
-        <td key={tableDatas[i].id}>
+        <td
+          key={tableDatas[i].id}
+          title={userAccount[tableDatas[i].reference] || "Empty"}
+        >
           <span className="cell-caption">{tableDatas[i].placeholder} :</span>
           {userAccLength ? (
             <p>{userAccount[tableDatas[i].reference] || "Empty"}</p>

@@ -88,7 +88,7 @@ const Signup = (props) => {
         })
       ) {
         shouldStopOnStep = true;
-        checkDoesAccountExist(formikValues)
+        const checkAccountPromise = checkDoesAccountExist(formikValues)
           .then((res) => {
             if (res.length > 0) {
               formik.setErrors({
@@ -103,6 +103,11 @@ const Signup = (props) => {
             }
           })
           .catch((err) => console.error(err));
+        toast.promise(checkAccountPromise, {
+          loading: "Checking account...",
+          success: "Account available",
+          error: "This account already exists!",
+        });
       }
       if (!isOnSubmit) {
         !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
