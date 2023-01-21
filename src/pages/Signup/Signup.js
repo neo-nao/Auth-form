@@ -88,8 +88,10 @@ const Signup = (props) => {
         })
       ) {
         shouldStopOnStep = true;
-        const checkAccountPromise = checkDoesAccountExist(formikValues)
+        const loadingToast = toast.loading("Checking account...");
+        checkDoesAccountExist(formikValues)
           .then((res) => {
+            toast.dismiss(loadingToast);
             if (res.length > 0) {
               formik.setErrors({
                 ...formik.errors,
@@ -100,14 +102,10 @@ const Signup = (props) => {
             } else {
               shouldStopOnStep = false;
               !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
+              toast.success("Account available");
             }
           })
           .catch((err) => console.error(err));
-        toast.promise(checkAccountPromise, {
-          loading: "Checking account...",
-          success: "Account available",
-          error: "This account already exists!",
-        });
       }
       if (!isOnSubmit) {
         !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
