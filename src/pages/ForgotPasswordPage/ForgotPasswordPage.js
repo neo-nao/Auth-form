@@ -52,19 +52,16 @@ const ForgotPasswordPage = ({ history }) => {
   const checkAccount = async (method, formValues) => {
     const promiseToast = toast.loading("Loading...");
     const { getUserAccount } = userAccount();
-    const response =
-      method === "email"
-        ? getUserAccount().email.toLowerCase() ===
-            formValues.email.toLowerCase() && getUserAccount()
-        : getUserAccount().number === formValues.number && getUserAccount();
 
-    const {
-      data: [account],
-    } = response;
+    const userAcc = getUserAccount();
 
     toast.dismiss(promiseToast);
 
-    if (account) {
+    if (
+      method === "email"
+        ? userAcc.email.toLowerCase() === formValues.email.toLowerCase()
+        : userAcc.number === formValues.number
+    ) {
       handlePageSections(1);
       authCode.generateCode();
 
@@ -76,7 +73,7 @@ const ForgotPasswordPage = ({ history }) => {
         { icon: "📧", duration: 1000 * 60 }
       );
 
-      setAccount(account);
+      setAccount(userAcc);
     } else {
       toast.error("Account is not found!");
     }

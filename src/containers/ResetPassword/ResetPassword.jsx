@@ -26,7 +26,7 @@ const validationSchema = () =>
 const updatedAccount = (accountId, data) => {
   const { getUserAccount, setUserAccount } = userAccount();
   if (getUserAccount.id === accountId) {
-    setUserAccount({ ...getUserAccount(), data });
+    setUserAccount(data);
     return "success";
   }
 
@@ -39,7 +39,7 @@ const handleSubmit = (values, account, push2Login) => {
 
     updatedAccount(account.id, modifiedAccount) === "success" && push2Login();
   } else {
-    toast.error("Passwords doesn't match");
+    toast.error("Passwords dont match");
   }
 };
 
