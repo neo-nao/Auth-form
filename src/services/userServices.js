@@ -8,4 +8,13 @@ const createUserToken = (length = 15) => {
   return result;
 };
 
-export { createUserToken };
+const userAccount = () => {
+  const storageKey = "user-account";
+  const getUserAccount = () => JSON.parse(localStorage.getItem(storageKey));
+  const setUserAccount = (value) =>
+    localStorage.setItem(storageKey, JSON.stringify(value));
+
+  return { getUserAccount, setUserAccount };
+};
+
+export { createUserToken, userAccount };

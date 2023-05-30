@@ -31,8 +31,7 @@ const MainInput = ({ type, placeholderText, isError, ...attributes }) => {
     <InputContainer
       isError={isError}
       isPassword={type === "password" ? true : false}
-      isOnFocus={isInputOnFocus}
-    >
+      isOnFocus={isInputOnFocus}>
       <Input
         type={
           type === "password" ? (isPasswordShowing ? "text" : "password") : type

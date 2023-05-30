@@ -9,7 +9,7 @@ import AuthCode from "../../containers/AuthCode/AuthCode";
 import NotFound from "../NotFound/NotFound";
 import ResetPassword from "../../containers/ResetPassword/ResetPassword";
 import { toast } from "react-hot-toast";
-import { getAccounts } from "../../services/accountServices";
+import { userAccount } from "../../services/userServices";
 
 const NavigationContainer = styled.div`
   width: 100%;
@@ -51,9 +51,12 @@ const ForgotPasswordPage = ({ history }) => {
 
   const checkAccount = async (method, formValues) => {
     const promiseToast = toast.loading("Loading...");
-    const response = await (method === "email"
-      ? getAccounts("?email=" + formValues.email.toLowerCase())
-      : getAccounts("?number=" + formValues.number));
+    const { getUserAccount } = userAccount();
+    const response =
+      method === "email"
+        ? getUserAccount().email.toLowerCase() ===
+            formValues.email.toLowerCase() && getUserAccount()
+        : getUserAccount().number === formValues.number && getUserAccount();
 
     const {
       data: [account],

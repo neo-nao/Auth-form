@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useFormik } from "formik";
 import { createUserToken } from "../../services/userServices";
-import { checkDoesAccountExist } from "../../services/accountServices";
 import {
   initialValues,
+  checkDoesAccountExist,
   validationSchema,
   onSubmit,
 } from "./signupRequiredValues";
@@ -20,7 +20,6 @@ import MainButton from "../../components/StyledButton/MainButton";
 import AuthMethodSelection from "../../components/AuthMethodSelection/AuthMethodSelection";
 import ImageSelectSection from "../../components/ImageSelectInput/ImageSelectSection";
 import { convertToBase64 } from "../../utils/utils";
-import { useMemo } from "react";
 
 const Signup = (props) => {
   const [signupStepIndex, setSignupStepIndex] = useState(0);
@@ -51,17 +50,8 @@ const Signup = (props) => {
   const handleSignupStep = (e) => {
     e.preventDefault();
 
-    const putTokenPromise = formik.setValues({
-      ...formikValues,
-      displayEmail: formik.values.email,
-    });
-
-    putTokenPromise
-      .then(() => {
-        !formikValues.userToken &&
-          formik.setValues({ ...formikValues, userToken: createUserToken() });
-      })
-      .catch((err) => console.error(err));
+    !formikValues.userToken &&
+      formik.setFieldValue("userToken", createUserToken());
 
     const errorKeys = Object.keys(formik.errors);
 
@@ -83,33 +73,24 @@ const Signup = (props) => {
 
     if (inpErrors.length === 0) {
       if (
-        stepInputDatas[signupStepIndex].some((inputData) => {
-          return inputData.checkExistence;
-        })
+        stepInputDatas[signupStepIndex].some(
+          (inputData) => inputData.checkExistence
+        )
       ) {
         shouldStopOnStep = true;
         const loadingToast = toast.loading("Checking account...");
-        checkDoesAccountExist(formikValues)
-          .then((res) => {
-            toast.dismiss(loadingToast);
-            if (res.length > 0) {
-              formik.setErrors({
-                ...formik.errors,
-                [formikSelectedMethod]: errorText,
-              });
-
-              toast.error(errorText);
-            } else {
-              shouldStopOnStep = false;
-              !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
-              toast.success("Account available");
-            }
-          })
-          .catch((err) => console.error(err));
+        if (checkDoesAccountExist()) {
+          toast.error(errorText);
+        } else {
+          shouldStopOnStep = false;
+          !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
+        }
+        toast.dismiss(loadingToast);
       }
-      if (!isOnSubmit) {
+
+      if (!isOnSubmit)
         !shouldStopOnStep && setSignupStepIndex(signupStepIndex + 1);
-      } else {
+      else {
         formik.submitForm();
       }
     } else {
@@ -138,17 +119,17 @@ const Signup = (props) => {
   };
 
   const handleRemoveImage = () => {
-    formik.setValues({ ...formikValues, profileImage: "" });
+    formik.setFieldValue("profileImage", "");
   };
 
   const handleAddImage = async (e) => {
     const [file] = e.target.files;
     const imageURL = await convertToBase64(file);
-    await formik.setValues({ ...formikValues, profileImage: imageURL });
+    await formik.setFieldValue("profileImage", imageURL);
   };
 
   const handleMethod = (methodType) =>
-    formik.setValues({ ...formikValues, selectedMethod: methodType });
+    formik.setFieldValue("selectedMethod", methodType);
 
   const handleInputProps = (name, togglingInputs, restInpDatas) => {
     if (togglingInputs) {
@@ -197,8 +178,7 @@ const Signup = (props) => {
           height:
             stepInputDatas[signupStepIndex].some((sid) => sid.id === 6) &&
             "27.5rem",
-        }}
-      >
+        }}>
         <InputWrapper>
           {signupStepIndex === 1 && methodSelector}
           <fieldset id="main-signup-inputs">

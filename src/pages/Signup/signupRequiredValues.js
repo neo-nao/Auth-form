@@ -1,14 +1,13 @@
 import * as yup from "yup";
-import { createAccountRequest } from "../../services/accountRequestFuncs";
 import { tokenCookie } from "../../services/cookieServices";
 import { toast } from "react-hot-toast";
+import { userAccount } from "../../services/userServices";
 
 const initialValues = {
   name: "",
   lastName: "",
   selectedMethod: "email",
   email: "",
-  displayEmail: "",
   number: "",
   profileImage: "",
   password: "",
@@ -28,6 +27,24 @@ const initialErrorsSchema = {
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 };
 
+const { getUserAccount, setUserAccount } = userAccount();
+
+const checkDoesAccountExist = () => {
+  const userAcc = getUserAccount();
+
+  if (userAcc) {
+    if (
+      window.confirm(
+        "Account already exists are you sure want to overwrite it?"
+      )
+    )
+      return false;
+    else return true;
+  }
+
+  return false;
+};
+
 const validationSchema = (method) => {
   if (method === "email")
     return yup.object({
@@ -45,20 +62,14 @@ const validationSchema = (method) => {
 };
 
 const onSubmit = (values, pushMethod) => {
-  const editedValues = { ...values, email: values.email.toLocaleLowerCase() };
-  const createAccountPromise = createAccountRequest(editedValues);
-  toast.promise(createAccountPromise, {
-    loading: "Loading...",
-    success: (msg) => msg || "Account created",
-    error: (err) => err || "Failed to create account!",
-  });
-  createAccountPromise.then(() => {
-    tokenCookie.cookieEnabled &&
-      tokenCookie.createTokenCookie({
-        cookiePassedValue: editedValues.userToken,
-      });
-    pushMethod("/");
-  });
+  const editedValues = { ...values, email: values.email };
+  setUserAccount(editedValues);
+  toast.success("Account created");
+  tokenCookie.cookieEnabled &&
+    tokenCookie.createTokenCookie({
+      cookiePassedValue: editedValues.userToken,
+    });
+  pushMethod("/");
 };
 
-export { initialValues, validationSchema, onSubmit };
+export { initialValues, checkDoesAccountExist, validationSchema, onSubmit };

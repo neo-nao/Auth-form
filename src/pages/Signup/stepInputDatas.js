@@ -31,12 +31,14 @@ const stepInputDatas = [
     {
       id: 4,
       type: "password",
+      autocomplete: "new-password",
       placeholderText: "Password",
       name: "password",
     },
     {
       id: 5,
       type: "password",
+      autocomplete: "new-password",
       placeholderText: "Confirm password",
       name: "passwordConfirmation",
     },

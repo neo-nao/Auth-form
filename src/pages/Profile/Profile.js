@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { tokenCookie, checkUserCookie } from "../../services/cookieServices";
-import { getAccounts } from "../../services/accountServices";
 import MainButton from "../../components/StyledButton/MainButton";
 import { ProfileSection, ImageContainer } from "./ProfileStyles.styled";
 import ProfileImage from "../../components/common/ProfileImage/ProfileImage";
 import ProfileDetail from "./ProfileDetail";
 import NotFound from "../NotFound/NotFound";
+import { userAccount } from "../../services/userServices";
 
 const Profile = ({ location }) => {
-  const [userAccount, setUserAccount] = useState({});
+  const [userAccountState, setUserAccountState] = useState({});
 
   const token = location.state ? location.state.token : null;
 
-  const getUserAccount = async (token) => {
-    const response = await getAccounts(`?userToken=${token}`);
+  const getUserAccount = (token) => {
+    const { getUserAccount } = userAccount();
+    const userAcc = getUserAccount();
+    const checkAcc = userAcc.userToken === token && userAcc;
 
-    setUserAccount(response.data[0] || {});
+    setUserAccountState(checkAcc || {});
   };
 
   const handleLogout = () => {
@@ -37,10 +39,14 @@ const Profile = ({ location }) => {
     <>
       <ProfileSection>
         <ImageContainer>
-          <ProfileImage src={userAccount.profileImage} size="125px" openable />
+          <ProfileImage
+            src={userAccountState.profileImage}
+            size="125px"
+            openable
+          />
         </ImageContainer>
       </ProfileSection>
-      <ProfileDetail userAccount={userAccount} />
+      <ProfileDetail userAccount={userAccountState} />
       <Link to="/">
         <MainButton style={{ marginTop: "3rem" }} onClick={handleLogout}>
           Log out

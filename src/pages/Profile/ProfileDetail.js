@@ -4,7 +4,7 @@ import SkeletonElement from "../../components/common/SkeletonElement/SkeletonEle
 const tableDatas = [
   { id: 1, placeholder: "Name", reference: "name" },
   { id: 2, placeholder: "Last name", reference: "lastName" },
-  { id: 3, placeholder: "Email", reference: "displayEmail" },
+  { id: 3, placeholder: "Email", reference: "email" },
   { id: 4, placeholder: "Number", reference: "number" },
   { id: 5, placeholder: "Password", reference: "password" },
 ];
@@ -20,8 +20,7 @@ const ProfileDetail = ({ userAccount }) => {
       const cellTag = (
         <td
           key={tableDatas[i].id}
-          title={userAccount[tableDatas[i].reference] || "Empty"}
-        >
+          title={userAccount[tableDatas[i].reference] || "Empty"}>
           <span className="cell-caption">{tableDatas[i].placeholder} :</span>
           {userAccLength ? (
             <p>{userAccount[tableDatas[i].reference] || "Empty"}</p>

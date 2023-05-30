@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-import { getAccounts } from "../../services/accountServices";
 import toast from "react-hot-toast";
 import MainInput from "../../components/StyledInput/MainInput";
 import {
@@ -11,6 +10,7 @@ import {
   ForgotPassLink,
 } from "../../styles/StyledElements/StyledElements";
 import MainButton from "../../components/StyledButton/MainButton";
+import { userAccount } from "../../services/userServices";
 
 // initial values for formik hook
 const initialValues = {
@@ -22,8 +22,8 @@ const handleLogin = (
   pushMethod,
   method,
   { emailMethodValues, numberMethodValues }
-) => {
-  const loginPromise = new Promise(async (resolve, reject) => {
+) =>
+  new Promise(async (resolve, reject) => {
     try {
       let valueBasedOnMethod =
         method === "email" ? emailMethodValues : numberMethodValues;
@@ -35,14 +35,21 @@ const handleLogin = (
         };
       }
 
-      const res = await getAccounts(
-        `?${method}=${valueBasedOnMethod[method]}&password=${valueBasedOnMethod.password}`
-      );
+      const { getUserAccount } = userAccount();
 
-      if (res.data.length > 0) {
+      const userAcc = getUserAccount();
+
+      if (
+        userAcc &&
+        (method === "email"
+          ? valueBasedOnMethod.email.toLowerCase() ===
+            userAcc.email.toLowerCase()
+          : valueBasedOnMethod.number === userAcc.number) &&
+        valueBasedOnMethod.password === userAcc.password
+      ) {
         pushMethod({
           pathname: "/profile",
-          state: { token: res.data[0].userToken },
+          state: { token: userAcc.userToken },
         });
 
         resolve("Loged in successfully");
@@ -53,9 +60,6 @@ const handleLogin = (
       reject("Error occured!");
     }
   });
-
-  return loginPromise;
-};
 
 const onSubmit = (values, method, pushMethod) => {
   const loginPromise = handleLogin(pushMethod, method, values);
@@ -184,8 +188,7 @@ const LoginForm = ({ method, history: { push } }) => {
         id="login-button"
         style={{ marginTop: "2.5rem" }}
         type="submit"
-        disabled={!formik.isValid}
-      >
+        disabled={!formik.isValid}>
         Login
       </MainButton>
     </AuthForm>
