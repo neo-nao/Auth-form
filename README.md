@@ -1,3 +1,5 @@
 # Form (Login & Signup) with formik
 
-A form app (including signup and login features) created using React.js & formik and styled components.
+An authentication form created using React.js & formik and styled components.
+
+[Alternative deployment](https://auth-form-naomi-san.netlify.app)
