@@ -10,7 +10,8 @@ import {
   ForgotPassLink,
 } from "../../styles/StyledElements/StyledElements";
 import MainButton from "../../components/StyledButton/MainButton";
-import { userAccount } from "../../services/userServices";
+import { createUserToken, userAccount } from "../../services/userServices";
+import { checkUserCookie, tokenCookie } from "../../services/cookieServices";
 
 // initial values for formik hook
 const initialValues = {
@@ -47,9 +48,11 @@ const handleLogin = (
           : valueBasedOnMethod.number === userAcc.number) &&
         valueBasedOnMethod.password === userAcc.password
       ) {
+        tokenCookie.cookieEnabled = true;
+        tokenCookie.createTokenCookie({ cookiePassedValue: userAcc.userToken });
+
         pushMethod({
           pathname: "/profile",
-          state: { token: userAcc.userToken },
         });
 
         resolve("Loged in successfully");

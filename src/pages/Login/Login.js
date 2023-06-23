@@ -3,18 +3,23 @@ import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import MainForm from "../../containers/MainForm/MainForm";
 import { checkUserCookie } from "../../services/cookieServices";
 
-const Login = ({ authenticationMethodHandler, history }) => {
+export const isPushed = { isPushed: false };
+
+const Login = ({ history }) => {
   const handleAutoLogin = (token) => {
-    token &&
+    if (token) {
       history.push({
         pathname: `/profile`,
         state: { token },
       });
+    }
   };
 
   useEffect(() => {
     const userToken = checkUserCookie();
-    userToken.doesTokenExist && handleAutoLogin(userToken.token);
+    userToken.doesTokenExist &&
+      !isPushed.isPushed &&
+      handleAutoLogin(userToken.token);
   }, []);
 
   return (
@@ -24,7 +29,7 @@ const Login = ({ authenticationMethodHandler, history }) => {
         headerParagraph="We're happy to see you again. To use your account, you should log in
         first."
       />
-      <MainForm authenticationMethodHandler={authenticationMethodHandler} />
+      <MainForm />
     </>
   );
 };

@@ -13,23 +13,26 @@ const checkUserCookie = () => {
 };
 
 class Cookie {
+  #_isCookieEnabled;
+  #_cookieObject;
+
   constructor(cookieObj = { cookieName: "", expire: 1, cookieValue: "" }) {
-    this._isCookieEnabled = checkUserCookie().doesTokenExist;
-    this.cookieObj = cookieObj;
+    this.#_isCookieEnabled = checkUserCookie().doesTokenExist;
+    this.#_cookieObject = cookieObj;
   }
 
   get cookieEnabled() {
-    return this._isCookieEnabled;
+    return this.#_isCookieEnabled;
   }
 
   set cookieEnabled(val) {
-    this._isCookieEnabled = val;
+    this.#_isCookieEnabled = val;
   }
 
   createTokenCookie = ({
-    cookieName = this.cookieObj.cookieName,
-    cookiePassedValue = this.cookieObj.cookiePassedValue,
-    expire = this.cookieObj.expire,
+    cookieName = this.#_cookieObject.cookieName,
+    cookiePassedValue = this.#_cookieObject.cookieValue,
+    expire = this.#_cookieObject.expire,
   }) => {
     const date = new Date();
 
@@ -44,7 +47,7 @@ class Cookie {
   };
 
   deleteCookie = () => {
-    document.cookie = `${this.cookieObj.cookieName}=;expires=${new Date(
+    document.cookie = `${this.#_cookieObject.cookieName}=;expires=${new Date(
       0
     )};path=/`;
   };

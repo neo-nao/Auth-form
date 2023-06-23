@@ -1,18 +1,9 @@
-import { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import FormContainerStyles from "./FormContainer.styled";
 import routes from "./routes";
 
-class FormContainer extends Component {
-  state = {
-    isOnLogin: true,
-  };
-
-  authenticationMethodHandler = () => {
-    this.setState({ isOnLogin: !this.state.isOnLogin });
-  };
-
-  handleRoutes = (route) => {
+function FormContainer() {
+  const handleRoutes = (route) => {
     const { id, Component, ...rest } = route;
 
     switch (id.toString()) {
@@ -21,12 +12,7 @@ class FormContainer extends Component {
           <Route
             key={id}
             {...rest}
-            render={(props) => (
-              <Component
-                authenticationMethodHandler={this.authenticationMethodHandler}
-                {...props}
-              />
-            )}
+            render={(props) => <Component {...props} />}
           />
         );
       }
@@ -36,15 +22,13 @@ class FormContainer extends Component {
     }
   };
 
-  render() {
-    return (
-      <FormContainerStyles>
-        <BrowserRouter>
-          <Switch>{routes.map((route) => this.handleRoutes(route))}</Switch>
-        </BrowserRouter>
-      </FormContainerStyles>
-    );
-  }
+  return (
+    <FormContainerStyles>
+      <BrowserRouter>
+        <Switch>{routes.map((route) => handleRoutes(route))}</Switch>
+      </BrowserRouter>
+    </FormContainerStyles>
+  );
 }
 
 export default FormContainer;

@@ -7,11 +7,10 @@ import ProfileImage from "../../components/common/ProfileImage/ProfileImage";
 import ProfileDetail from "./ProfileDetail";
 import NotFound from "../NotFound/NotFound";
 import { userAccount } from "../../services/userServices";
+import { isPushed } from "../Login/Login";
 
-const Profile = ({ location }) => {
+const Profile = () => {
   const [userAccountState, setUserAccountState] = useState({});
-
-  const token = location.state ? location.state.token : null;
 
   const getUserAccount = (token) => {
     const { getUserAccount } = userAccount();
@@ -27,15 +26,12 @@ const Profile = ({ location }) => {
   };
 
   useEffect(() => {
-    token && getUserAccount(token);
-
-    tokenCookie.cookieEnabled &&
-      !checkUserCookie().doesTokenExist &&
-      token &&
-      tokenCookie.createTokenCookie({ cookiePassedValue: token });
+    const cookie = checkUserCookie();
+    cookie.doesTokenExist && getUserAccount(cookie.token);
+    isPushed.isPushed = true;
   }, []);
 
-  return token ? (
+  return tokenCookie.cookieEnabled ? (
     <>
       <ProfileSection>
         <ImageContainer>
